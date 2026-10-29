@@ -16,7 +16,6 @@ export const criarVenda = (req, res) => {
         const novaVenda = vendaService.realizarVenda(itens);
         res.status(201).json(novaVenda);
     } catch (error) {
-        // Tratamento dos erros disparados na camada Service
         const [tipo, arg1, arg2, arg3] = error.message.split(':');
 
         if (tipo === 'PRODUTO_NAO_ENCONTRADO') {

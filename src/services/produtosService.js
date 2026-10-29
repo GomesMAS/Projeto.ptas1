@@ -9,7 +9,7 @@ export const buscarTodos = () => {
     return produtos;
 };
 
-export const buscarPorId = (id) => {
+export const buscarId = (id) => {
     return produtos.find(p => p.id === id);
 };
 
@@ -27,7 +27,7 @@ export const criar = (dados) => {
 };
 
 export const atualizar = (id, dados) => {
-    const produto = buscarPorId(id);
+    const produto = buscarId(id);
     if (!produto) return null;
 
     const { nome, preco, quantEstoque, estoqueMinimo } = dados;

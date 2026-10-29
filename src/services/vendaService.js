@@ -1,7 +1,7 @@
 //regra de negocio
 
 
-import { produtos, buscarPorId } from './produtoService.js';
+import { produtos, buscarId } from './produtoService.js';
 
 const vendas = [];
 let proximoVendaId = 1;
@@ -12,7 +12,7 @@ export const buscarTodasVendas = () => {
 
 export const realizarVenda = (itens) => {
     for (const item of itens) {
-        const produto = buscarPorId(item.produtoId);
+        const produto = buscarId(item.produtoId);
 
         if (!produto) {
             throw new Error(`PRODUTO_NAO_ENCONTRADO:${item.produtoId}`);
@@ -27,7 +27,7 @@ export const realizarVenda = (itens) => {
     const itensProcessados = [];
 
     for (const item of itens) {
-        const produto = buscarPorId(item.produtoId);
+        const produto = buscarId(item.produtoId);
 
         produto.quantEstoque -= item.quantidade;
 
