@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { listarVendas, criarVenda } from '../controllers/vendaController.js';
+const { Router } = require('express');
+const vendaController = require('../controllers/vendaController');
 
 const router = Router();
 
-router.get('/', listarVendas);
-router.post('/', criarVenda);
+router.post('/', vendaController.criar);
 
-export default router;
+module.exports = router;
+

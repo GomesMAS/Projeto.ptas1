@@ -1,11 +1,11 @@
-import * as produtoService from '../services/produtoService.js';
+import * as produtoService from '../services/produtosService.js';
 
-export const listarProdutos = (req, res) => {
+export function listarProdutos  (req, res)  {
     const lista = produtoService.buscarTodos();
     res.status(200).json(lista);
 };
 
-export const obterProdutoPorId = (req, res) => {
+export function obterProdutoPorId (req, res)  {
     const id = parseInt(req.params.id, 10);
     const produto = produtoService.buscarPorId(id);
 
@@ -16,7 +16,7 @@ export const obterProdutoPorId = (req, res) => {
     res.status(200).json(produto);
 };
 
-export const criarProduto = (req, res) => {
+export function criarProduto (req, res) {
     const { nome, preco, quantEstoque } = req.body;
 
     if (!nome || preco === undefined || quantEstoque === undefined) {
@@ -27,7 +27,7 @@ export const criarProduto = (req, res) => {
     res.status(201).json(novo);
 };
 
-export const atualizarProduto = (req, res) => {
+export function atualizarProduto (req, res) {
     const id = parseInt(req.params.id, 10);
     const produtoAtualizado = produtoService.atualizar(id, req.body);
 

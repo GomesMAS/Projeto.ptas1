@@ -9,7 +9,7 @@ export const criarVenda = (req, res) => {
     const { itens } = req.body; 
 
     if (!itens || !Array.isArray(itens) || itens.length === 0) {
-        return res.status(400).json({ error: 'A venda deve conter pelo menos um item no array "itens".' });
+        return res.status(400).json({ error: 'A venda deve conter pelo menos um item no array itens.' });
     }
 
     try {
