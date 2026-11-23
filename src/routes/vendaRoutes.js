@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const vendaController = require('../controllers/vendaController');
+import { Router } from('express')
+import vendaController from '../controllers/vendaController'
 
 const router = Router();
 
 router.post('/', vendaController.criar);
 
-module.exports = router;
+export default router;
 

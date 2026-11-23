@@ -14,4 +14,4 @@ class ProdutosService {
   }
 }
 
-module.exports = new ProdutosService();
+export default ProdutosService();

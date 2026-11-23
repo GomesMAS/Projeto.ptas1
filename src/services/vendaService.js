@@ -1,5 +1,5 @@
 
-const vendaService = require('../services/vendaService');
+import vendaService from '../services/vendaService'
 
 class VendaController {
   async criar(req, res) {
@@ -12,4 +12,4 @@ class VendaController {
   }
 }
 
-module.exports = new VendaController();
+export default VendaController();

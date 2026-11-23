@@ -1,6 +1,8 @@
-const express = require('express');
-const produtosRoutes = require('./routes/produtosRoutes');
-const vendaRoutes = require('./routes/vendaRoutes');
+import express from 'express'
+import produtosRoutes from './routes/produtosRoutes'
+import vendaRoutes from './routes/vendaRoutes'
+
+
 
 const app = express();
 
@@ -13,4 +15,4 @@ app.get('/', (req, res) => {
   return res.json({ status: 'API rodando com sucesso!' });
 });
 
-module.exports = app;
+export default app;

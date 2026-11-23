@@ -1,11 +1,11 @@
 import * as vendaService from '../services/vendaService.js';
 
-export const listarVendas = (req, res) => {
+export function listarVendas(req, res){
     const lista = vendaService.buscarTodasVendas();
     res.status(200).json(lista);
 };
 
-export const criarVenda = (req, res) => {
+export function criarVenda(req, res){
     const { itens } = req.body; 
 
     if (!itens || !Array.isArray(itens) || itens.length === 0) {

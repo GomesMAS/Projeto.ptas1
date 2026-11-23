@@ -1,5 +1,5 @@
-const VendaModel = require('../models/venda.model');
-const db = require('../config/database');
+import VendaModel from '../models/venda.model'
+import db from'../config/database'
 
 class VendaService {
   async registrarVenda(dados) {
@@ -28,4 +28,4 @@ class VendaService {
   }
 }
 
-module.exports = new VendaService();
+export default VendaService();

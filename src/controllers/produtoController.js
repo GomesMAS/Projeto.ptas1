@@ -38,7 +38,7 @@ export function atualizarProduto (req, res) {
     res.status(200).json(produtoAtualizado);
 };
 
-export const deletarProduto = (req, res) => {
+export function deletarProduto(req, res){
     const id = parseInt(req.params.id, 10);
     const removido = produtoService.deletar(id);
 
