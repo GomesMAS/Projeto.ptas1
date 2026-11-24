@@ -1,28 +1,24 @@
+import 'dotenv/config';
 import { MongoClient } from 'mongodb';
 
-let client;
+const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017';
+const dbName = process.env.MONGO_DB_NAME || 'projeto_ptas1';
+const client = new MongoClient(uri);
 let db;
 
-export async function conectar() {
-  const uri = process.env.MONGODB_URI;
-  const nomeDoBanco = process.env.MONGODB_DB_NAME;
-
-  if (!uri || !nomeDoBanco) {
-    throw new Error('Defina MONGODB_URI e MONGODB_DB_NAME no arquivo .env.');
+export async function connectDatabase() {
+  if (!db) {
+    await client.connect();
+    db = client.db(dbName);
   }
-
-  client = new MongoClient(uri);
-  await client.connect();
-  db = client.db(nomeDoBanco);
   return db;
 }
 
-export function obterBanco() {
+export function getDb() {
+  if (!db) {
+    throw new Error('Banco de dados não conectado.');
+  }
   return db;
 }
 
-export async function desconectar() {
-  if (client) {
-    await client.close();
-  }
-}
+export default { connectDatabase, getDb };

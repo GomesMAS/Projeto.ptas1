@@ -1,17 +1,34 @@
+import { ObjectId } from 'mongodb';
+import { getDb } from '../config/database.js';
 
-const ProdutoModel = require('../models/produtos.model');
+const collection = () => getDb().collection('produtos');
 
-class ProdutosService {
-  async listarProdutos() {
-    return await ProdutoModel.findAll();
-  }
-
-  async cadastrarProduto(dados) {
-    if (!dados.nome || dados.preco <= 0 || dados.quantidade < 0) {
-      throw new Error('Dados do produto inválidos.');
-    }
-    return await ProdutoModel.create(dados);
-  }
+export async function inserir(doc) {
+  const res = await collection().insertOne(doc);
+  return { _id: res.insertedId, ...doc };
 }
 
-export default ProdutosService();
+export async function buscarTodas() {
+  return await collection().find({}).toArray();
+}
+
+export async function buscarPorId(id) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOne({ _id: new ObjectId(id) });
+}
+
+export async function atualizar(id, dados) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: dados },
+    { returnDocument: 'after' }
+  );
+}
+
+export async function remover(id) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOneAndDelete({ _id: new ObjectId(id) });
+}
+
+export default { inserir, buscarTodas, buscarPorId, atualizar, remover };

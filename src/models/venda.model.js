@@ -1,31 +1,34 @@
-import VendaModel from '../models/venda.model'
-import db from'../config/database'
+import { ObjectId } from 'mongodb';
+import { getDb } from '../config/database.js';
 
-class VendaService {
-  async registrarVenda(dados) {
-    const { produto_id, quantidade } = dados;
+const collection = () => getDb().collection('vendas');
 
-    return new Promise((resolve, reject) => {
-      db.get('SELECT * FROM produtos WHERE id = ?', [produto_id], async (err, produto) => {
-        if (err) return reject(err);
-        if (!produto) return reject(new Error('Produto não encontrado.'));
-        if (produto.quantidade < quantidade) return reject(new Error('Estoque insuficiente.'));
-
-        const total = produto.preco * quantidade;
-
-        db.run('UPDATE produtos SET quantidade = quantidade - ? WHERE id = ?', [quantidade, produto_id], async (updateErr) => {
-          if (updateErr) return reject(updateErr);
-
-          try {
-            const novaVenda = await VendaModel.create({ produto_id, quantidade, total });
-            resolve(novaVenda);
-          } catch (modelErr) {
-            reject(modelErr);
-          }
-        });
-      });
-    });
-  }
+export async function inserir(doc) {
+  const res = await collection().insertOne(doc);
+  return { _id: res.insertedId, ...doc };
 }
 
-export default VendaService();
+export async function buscarTodas() {
+  return await collection().find({}).toArray();
+}
+
+export async function buscarPorId(id) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOne({ _id: new ObjectId(id) });
+}
+
+export async function atualizar(id, dados) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: dados },
+    { returnDocument: 'after' }
+  );
+}
+
+export async function remover(id) {
+  if (!ObjectId.isValid(id)) return null;
+  return await collection().findOneAndDelete({ _id: new ObjectId(id) });
+}
+
+export default { inserir, buscarTodas, buscarPorId, atualizar, remover };

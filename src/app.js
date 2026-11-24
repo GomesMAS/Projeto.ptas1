@@ -1,8 +1,6 @@
-import express from 'express'
-import produtosRoutes from './routes/produtosRoutes'
-import vendaRoutes from './routes/vendaRoutes'
-
-
+import express from 'express';
+import produtosRoutes from './routes/produtosRoutes.js';
+import vendaRoutes from './routes/vendaRoutes.js';
 
 const app = express();
 

@@ -1,50 +1,47 @@
-import * as produtoService from '../services/produtosService.js';
+import produtosService from '../services/produtosService.js';
 
-export function listarProdutos  (req, res)  {
-    const lista = produtoService.buscarTodos();
-    res.status(200).json(lista);
-};
+class ProdutoController {
+  async listar(req, res) {
+    try {
+      const produtos = await produtosService.listarProdutos();
+      return res.status(200).json(produtos);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 
-export function obterProdutoPorId (req, res)  {
-    const id = parseInt(req.params.id, 10);
-    const produto = produtoService.buscarPorId(id);
-
+  async obterPorId(req, res) {
+    const produto = await produtosService.buscarPorId(req.params.id);
     if (!produto) {
-        return res.status(404).json({ error: "Produto não encontrado." });
+      return res.status(404).json({ error: 'Produto não encontrado.' });
     }
-
     res.status(200).json(produto);
-};
+  }
 
-export function criarProduto (req, res) {
-    const { nome, preco, quantEstoque } = req.body;
-
-    if (!nome || preco === undefined || quantEstoque === undefined) {
-        return res.status(400).json({ error: 'Os campos "nome", "preco" e "quantEstoque" são obrigatórios.' });
+  async criar(req, res) {
+    try {
+      const novoProduto = await produtosService.cadastrarProduto(req.body);
+      return res.status(201).json(novoProduto);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
     }
+  }
 
-    const novo = produtoService.criar(req.body);
-    res.status(201).json(novo);
-};
-
-export function atualizarProduto (req, res) {
-    const id = parseInt(req.params.id, 10);
-    const produtoAtualizado = produtoService.atualizar(id, req.body);
-
+  async atualizar(req, res) {
+    const produtoAtualizado = await produtosService.atualizar(req.params.id, req.body);
     if (!produtoAtualizado) {
-        return res.status(404).json({ error: "Produto não encontrado para atualização." });
+      return res.status(404).json({ error: 'Produto não encontrado para atualização.' });
     }
-
     res.status(200).json(produtoAtualizado);
-};
+  }
 
-export function deletarProduto(req, res){
-    const id = parseInt(req.params.id, 10);
-    const removido = produtoService.deletar(id);
-
+  async deletar(req, res) {
+    const removido = await produtosService.deletar(req.params.id);
     if (!removido) {
-        return res.status(404).json({ error: "Produto não encontrado para exclusão." });
+      return res.status(404).json({ error: 'Produto não encontrado para exclusão.' });
     }
+    res.status(200).json({ message: 'Produto removido com sucesso.', produto: removido });
+  }
+}
 
-    res.status(200).json({ message: "Produto removido com sucesso.", produto: removido });
-};
+export default new ProdutoController();
